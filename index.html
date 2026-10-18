@@ -3,148 +3,189 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ficha Clínica Facial — Dra. Helena Gomes</title>
+<title>Ficha Clínica Facial — HG Clinical Hub</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#414B39">
+<link rel="icon" href="assets/simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* ============ CONFIGURAÇÃO VISUAL ============ */
+/* ============ IDENTIDADE HG CLINICAL HUB ============ */
 :root{
-  --bg:#f7f5f0; --card:#ffffff; --ink:#2b2e27; --muted:#7d8076; --line:#e4e1d8;
-  --sage:#5d6b4c; --sage-dark:#46523a; --sage-soft:#eef0e8; --gold:#b39a6b; --danger:#a5483c;
-  --radius:18px;
+  --cream:#E3D3BC; --sage-l:#B4B897; --sage:#849573; --olive:#414B39; --brown:#705D3F;
+  --bg:#F4EEE4; --paper:#FBF8F3; --ink:#2F352A; --muted:#857C6E; --line:#E4D9C7;
+  --danger:#9C4A3A; --radius:22px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg)}
-body{font-family:Inter,system-ui,sans-serif;color:var(--ink);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
-.serif{font-family:"Cormorant Garamond",Georgia,serif}
-.wrap{max-width:680px;margin:0 auto;padding:24px 16px 120px}
+body{font-family:Jost,system-ui,sans-serif;font-weight:400;color:var(--ink);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+.jl{font-family:"Julius Sans One",Jost,sans-serif;font-weight:400;letter-spacing:.14em;text-transform:uppercase}
 
-/* Cabeçalho */
-header.brand{display:flex;justify-content:space-between;align-items:flex-end;padding:8px 0 20px;border-bottom:1px solid var(--line);margin-bottom:24px}
-.brand h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:30px;line-height:1;color:var(--ink)}
-.brand small{display:block;letter-spacing:.32em;font-size:10px;color:var(--muted);margin-top:6px;text-transform:uppercase}
-.brand .cro{font-size:11px;color:var(--muted);letter-spacing:.08em}
-.topbar{height:4px;background:var(--sage)}
+/* Marca como máscara: recolore o PNG com qualquer cor da paleta */
+.mark{display:block;background:currentColor;-webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat}
+.m-logo{--src:url(assets/logo.png);aspect-ratio:651/260}
+.m-simbolo{--src:url(assets/simbolo.png);aspect-ratio:249/240}
+.m-sublogo{--src:url(assets/sublogo.png);aspect-ratio:310/320}
+
+/* Topo */
+.topbar{background:var(--olive);color:var(--cream)}
+.topbar .in{max-width:720px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.topbar .m-logo{height:38px;flex-shrink:0}
+@media (max-width:420px){.topbar .who{font-size:9.5px}.topbar .who b{font-size:10.5px}}
+.topbar .who{font-size:10.5px;text-align:right;line-height:1.5;color:var(--sage-l)}
+.topbar .who b{display:block;color:var(--cream);font-weight:400;font-size:11.5px}
+
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 130px}
 
 /* Progresso */
-.progress{margin-bottom:28px}
-.progress .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
-.progress .bar{height:3px;background:var(--line);border-radius:3px;overflow:hidden}
-.progress .bar i{display:block;height:100%;background:var(--sage);width:0;transition:width .4s ease}
+.progress{margin:4px 0 26px}
+.progress .meta{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--muted);margin-bottom:10px}
+.progress .meta .jl{color:var(--olive);font-size:12px}
+.progress .bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.progress .bar i{height:3px;border-radius:3px;background:var(--line);transition:background .4s}
+.progress .bar i.on{background:var(--sage)}
+.progress .bar i.cur{background:var(--olive)}
 
 /* Etapas */
-.step{display:none;animation:fade .35s ease}
+.step{display:none;animation:fade .4s ease}
 .step.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.step h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:32px;line-height:1.15;color:var(--sage-dark);margin-bottom:6px}
-.step .lead{color:var(--muted);margin-bottom:24px;font-size:15px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;margin-bottom:16px}
-.card h3{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:20px;color:var(--sage-dark);margin-bottom:14px}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:11px;color:var(--brown);margin-bottom:8px}
+.step h2{font-family:"Julius Sans One",sans-serif;font-weight:400;font-size:26px;line-height:1.25;letter-spacing:.06em;color:var(--olive);margin-bottom:8px;text-transform:uppercase}
+.step .lead{color:var(--muted);margin-bottom:24px;font-size:15.5px;font-weight:300}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px 20px;margin-bottom:16px;box-shadow:0 1px 0 rgba(65,75,57,.03),0 12px 30px -24px rgba(65,75,57,.35)}
+.card h3{font-family:"Julius Sans One",sans-serif;font-weight:400;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--brown);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.card h3::after{content:"";flex:1;height:1px;background:var(--line)}
 
 /* Campos */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid .full{grid-column:1/-1}
 @media (max-width:560px){.grid{grid-template-columns:1fr}}
 label.f{display:block}
-label.f span{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px}
-label.f span em{color:var(--danger);font-style:normal}
+label.f>span{display:block;font-size:13.5px;font-weight:500;color:var(--olive);margin-bottom:7px}
+label.f>span em{color:var(--brown);font-style:normal}
 input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{
-  width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fbfaf7;border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:none;transition:border .2s,background .2s}
-input:focus,select:focus,textarea:focus{border-color:var(--sage);background:#fff}
-textarea{min-height:88px;resize:vertical}
-.invalid input,.invalid select,.invalid textarea,.q.invalid{border-color:var(--danger)!important}
-.q.invalid{background:#fbf3f1}
-.hint{font-size:12px;color:var(--muted);margin-top:4px}
+  width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;outline:none;transition:border .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--sage) 50%),linear-gradient(135deg,var(--sage) 50%,transparent 50%);background-position:calc(100% - 20px) 55%,calc(100% - 15px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+input:focus,select:focus,textarea:focus{border-color:var(--sage);box-shadow:0 0 0 4px rgba(132,149,115,.15)}
+input::placeholder,textarea::placeholder{color:#B5AC9D;font-weight:300}
+textarea{min-height:92px;resize:vertical}
+.invalid input,.invalid select,.invalid textarea{border-color:var(--danger)!important}
+.q.invalid{border-color:var(--danger)!important;background:#FBF1EC}
+.f.invalid>label>span,.f.invalid>span{color:var(--danger)}
+.hint{font-size:12px;color:var(--muted);margin-top:5px;font-weight:300}
 
 /* Perguntas sim/não */
-.q{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;background:#fff;transition:background .2s,border .2s}
+.q{border:1px solid var(--line);border-radius:18px;padding:15px 16px;margin-bottom:10px;background:var(--paper);transition:background .2s,border .2s}
 .q .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.q .txt{font-size:15px}
+.q .txt{font-size:15.5px}
+.q.yes{border-color:var(--sage-l);background:#F7F6EE}
 .pills{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
-.pills.wrap{margin-top:10px}
+.pills.wrap{margin-top:12px}
 .pill{position:relative}
 .pill input{position:absolute;opacity:0;pointer-events:none}
-.pill b{display:inline-block;font-weight:500;font-size:13px;letter-spacing:.04em;padding:8px 16px;border-radius:999px;border:1px solid var(--line);cursor:pointer;user-select:none;transition:all .2s;background:#fff;color:var(--ink)}
-.pill input:checked + b{background:var(--sage);border-color:var(--sage);color:#fff}
-.pill input:focus-visible + b{outline:2px solid var(--gold);outline-offset:2px}
+.pill b{display:inline-block;font-weight:400;font-size:14px;padding:8px 18px;border-radius:999px;border:1px solid var(--line);cursor:pointer;user-select:none;transition:all .2s;background:#fff;color:var(--ink)}
+.pill b:hover{border-color:var(--sage-l)}
+.pill input:checked + b{background:var(--olive);border-color:var(--olive);color:var(--cream)}
+.pill input:focus-visible + b{outline:2px solid var(--brown);outline-offset:2px}
 .detail{display:none;margin-top:12px}
 .q.yes .detail{display:block}
 @media (max-width:460px){.q .row{flex-direction:column;align-items:flex-start}}
 
-/* Botões */
-.nav{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(to top,var(--bg) 70%,transparent);padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
-.nav .in{max-width:680px;margin:0 auto;display:flex;gap:10px}
+/* Navegação */
+.nav{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(to top,var(--bg) 72%,rgba(244,238,228,0));padding:18px 16px calc(18px + env(safe-area-inset-bottom));z-index:5}
+.nav .in{max-width:720px;margin:0 auto;display:flex;gap:10px}
 button{font:inherit;cursor:pointer;border:none}
-.btn{flex:1;padding:15px 20px;border-radius:999px;font-weight:500;font-size:15px;letter-spacing:.02em;transition:all .2s}
-.btn.primary{background:var(--sage);color:#fff}
-.btn.primary:hover{background:var(--sage-dark)}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);flex:0 0 auto}
-.btn:disabled{opacity:.5;cursor:default}
+.btn{flex:1;padding:16px 22px;border-radius:999px;font-family:"Julius Sans One",sans-serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase;transition:all .2s}
+.btn.primary{background:var(--olive);color:var(--cream)}
+.btn.primary:hover{background:#353e2f}
+.btn.ghost{background:transparent;color:var(--olive);border:1px solid var(--line);flex:0 0 auto}
+.btn.light{background:var(--cream);color:var(--olive)}
+.btn.outline-light{background:transparent;color:var(--cream);border:1px solid rgba(227,211,188,.4)}
+.btn:disabled{opacity:.55;cursor:default}
 
-/* Boas-vindas */
-.welcome{text-align:center;padding:24px 4px}
-.welcome .mono{width:76px;height:76px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;margin:0 auto 22px;font-family:"Cormorant Garamond",serif;font-size:30px;color:var(--gold)}
-.welcome h2{font-size:38px}
-.welcome p{color:var(--muted);max-width:480px;margin:0 auto 12px}
-.welcome .tags{display:flex;justify-content:center;gap:18px;margin-top:22px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+/* Hero (boas-vindas e conclusão) */
+.hero{position:relative;overflow:hidden;background:var(--olive);color:var(--cream);border-radius:28px;padding:44px 24px 40px;text-align:center}
+.hero .pattern{position:absolute;inset:-20px;opacity:.07;color:var(--cream);
+  background:currentColor;-webkit-mask:url(assets/simbolo.png) 0 0/64px auto repeat;mask:url(assets/simbolo.png) 0 0/64px auto repeat;pointer-events:none}
+.hero>*{position:relative}
+.hero .m-sublogo{width:118px;margin:0 auto 26px;color:var(--cream)}
+.hero .eyebrow{color:var(--sage-l)}
+.hero h2{color:var(--cream);font-size:24px;margin:6px 0 14px}
+.hero p{color:#D9CDB9;max-width:470px;margin:0 auto 10px;font-weight:300}
+.hero p strong{color:var(--cream);font-weight:500}
+.hero .tags{display:flex;justify-content:center;gap:10px 20px;margin-top:26px;flex-wrap:wrap}
+.hero .tags span{font-size:10.5px;color:var(--sage-l)}
+.hero .tags span::before{content:"·";margin-right:8px;color:var(--cream)}
 
 /* Assinatura */
-.sig-box{border:1px dashed var(--gold);border-radius:14px;background:#fffdf8;position:relative;touch-action:none}
-.sig-box canvas{display:block;width:100%;height:190px;border-radius:14px}
-.sig-box .ph{position:absolute;inset:0;display:grid;place-items:center;color:#c8bfae;font-family:"Cormorant Garamond",serif;font-size:22px;pointer-events:none}
-.sig-box .line{position:absolute;left:24px;right:24px;bottom:42px;border-bottom:1px solid #e3dccc;pointer-events:none}
-.sig-tools{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:var(--muted)}
-.linkbtn{background:none;color:var(--sage);font-size:13px;text-decoration:underline;padding:4px}
-.check{display:flex;gap:12px;align-items:flex-start;font-size:14px;margin-top:14px;cursor:pointer}
-.check input{width:20px;height:20px;accent-color:var(--sage);flex-shrink:0;margin-top:2px}
-.term{font-family:"Cormorant Garamond",serif;font-size:19px;line-height:1.45;color:var(--ink);border-left:2px solid var(--gold);padding-left:14px;margin-bottom:6px}
+.sig-box{border:1px solid var(--line);border-radius:18px;background:#fff;position:relative;touch-action:none}
+.sig-box canvas{display:block;width:100%;height:200px;border-radius:18px;cursor:crosshair}
+.sig-box .ph{position:absolute;inset:0;display:grid;place-items:center;color:#CFC3AF;font-size:12px;pointer-events:none}
+.sig-box .line{position:absolute;left:28px;right:28px;bottom:46px;border-bottom:1px solid var(--line);pointer-events:none}
+.sig-box .x{position:absolute;left:28px;bottom:52px;color:var(--sage);font-size:16px;pointer-events:none}
+.sig-tools{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.linkbtn{background:none;color:var(--brown);font-size:13px;text-decoration:underline;text-underline-offset:3px;padding:4px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;margin-top:14px;cursor:pointer;font-weight:300}
+.check input{width:20px;height:20px;accent-color:var(--olive);flex-shrink:0;margin-top:2px}
+.term{font-size:17px;line-height:1.55;color:var(--olive);border-left:2px solid var(--sage);padding-left:16px;margin-bottom:8px}
 
 /* Revisão */
-.review dl{display:grid;grid-template-columns:1fr auto;gap:6px 14px;font-size:14px}
-.review dt{color:var(--muted)}
-.review dd{text-align:right;font-weight:500}
+.review dl{display:grid;grid-template-columns:1fr auto;gap:8px 14px;font-size:14.5px}
+.review dt{color:var(--muted);font-weight:300}
+.review dd{text-align:right}
 .review .alert{color:var(--danger)}
 
-/* Final */
-.done{text-align:center;padding:30px 4px}
-.done .ok{width:72px;height:72px;border-radius:50%;background:var(--sage-soft);display:grid;place-items:center;margin:0 auto 20px}
-.done .actions{display:flex;flex-direction:column;gap:10px;max-width:380px;margin:26px auto 0}
+/* Conclusão */
+.done .ok{width:64px;height:64px;border-radius:50%;border:1px solid rgba(227,211,188,.5);display:grid;place-items:center;margin:0 auto 22px}
+.done .actions{display:flex;flex-direction:column;gap:10px;max-width:360px;margin:28px auto 0}
 .done .actions .btn{flex:none}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;padding:7px 14px;border-radius:999px;background:rgba(227,211,188,.12);color:var(--cream);margin-top:6px}
+.status i{width:7px;height:7px;border-radius:50%;background:var(--sage-l)}
+.status.wait i{animation:pulse 1s infinite alternate}
+@keyframes pulse{to{opacity:.25}}
 .small{font-size:12px;color:var(--muted)}
-.toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9}
+.hero .small{color:var(--sage-l)}
+.toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--olive);color:var(--cream);padding:11px 20px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9;max-width:calc(100% - 32px);text-align:center}
 .toast.show{opacity:1}
+footer.brand{text-align:center;padding:30px 0 0;color:var(--sage)}
+footer.brand .m-simbolo{width:26px;margin:0 auto 8px}
+footer.brand span{font-size:10px;color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="topbar"></div>
-<div class="wrap">
-  <header class="brand">
-    <div><h1>Helena Gomes</h1><small>Cirurgiã-Dentista</small></div>
-    <div class="cro">CRO-CE 13680</div>
-  </header>
+<header class="topbar">
+  <div class="in">
+    <i class="mark m-logo" role="img" aria-label="HG Clinical Hub"></i>
+    <div class="who jl"><b>Dra. Helena Gomes</b>Cirurgiã-Dentista · CRO-CE 13680</div>
+  </div>
+</header>
 
+<div class="wrap">
   <div class="progress" id="progress" hidden>
-    <div class="meta"><span id="stepName"></span><span id="stepCount"></span></div>
-    <div class="bar"><i id="bar"></i></div>
+    <div class="meta"><span class="jl" id="stepName"></span><span id="stepCount"></span></div>
+    <div class="bar" id="bar"><i></i><i></i><i></i><i></i><i></i><i></i></div>
   </div>
 
   <form id="form" novalidate autocomplete="on">
     <!-- 0 · Boas-vindas -->
     <section class="step active" data-name="Boas-vindas">
-      <div class="welcome">
-        <div class="mono">HG</div>
-        <h2 class="serif" id="welcomeTitle">Seja muito bem-vinda</h2>
+      <div class="hero">
+        <div class="pattern"></div>
+        <i class="mark m-sublogo" aria-hidden="true"></i>
+        <div class="eyebrow jl">Ficha clínica facial</div>
+        <h2 id="welcomeTitle">Seja muito bem-vinda</h2>
         <p>Preparamos esta ficha para que o seu atendimento seja pensado, desde o primeiro minuto, exclusivamente para você.</p>
         <p>Leva cerca de <strong>8 minutos</strong>. Suas respostas ficam salvas neste aparelho enquanto você preenche, então pode pausar e voltar quando quiser.</p>
-        <div class="tags"><span>✦ Atendimento personalizado</span><span>✦ Dados protegidos (LGPD)</span><span>✦ Assinatura digital</span></div>
+        <div class="tags jl"><span>Atendimento personalizado</span><span>Dados protegidos</span><span>Assinatura digital</span></div>
       </div>
     </section>
 
     <!-- 1 · Dados pessoais -->
     <section class="step" data-name="Dados pessoais">
+      <div class="eyebrow jl">Etapa 1</div>
       <h2>Vamos nos conhecer</h2>
       <p class="lead">Seus dados de cadastro, para o prontuário.</p>
       <div class="card grid">
@@ -173,26 +214,27 @@ button{font:inherit;cursor:pointer;border:none}
 
     <!-- 2 · Experiência -->
     <section class="step" data-name="Sua experiência">
+      <div class="eyebrow jl">Etapa 2</div>
       <h2>Uma experiência só sua</h2>
       <p class="lead">Queremos que cada detalhe do seu atendimento tenha a sua cara.</p>
       <div class="card grid">
         <label class="f full"><span>Seu Instagram</span><input type="text" name="instagram" placeholder="@seuperfil" autocapitalize="off"></label>
         <div class="f full"><label class="f"><span>Como você conheceu a Dra. Helena? <em>*</em></span></label>
-          <div class="pills" data-req="origem" id="origem">
+          <div class="pills" data-req="origem">
             <label class="pill"><input type="radio" name="origem" value="Instagram"><b>Instagram</b></label>
             <label class="pill"><input type="radio" name="origem" value="Indicação"><b>Indicação</b></label>
             <label class="pill"><input type="radio" name="origem" value="Google"><b>Google</b></label>
             <label class="pill"><input type="radio" name="origem" value="Já sou paciente"><b>Já sou paciente</b></label>
             <label class="pill"><input type="radio" name="origem" value="Outro"><b>Outro</b></label>
           </div>
-          <label class="f" id="indicadoWrap" style="display:none;margin-top:12px"><span>Quem indicou você? Queremos agradecer 🤍</span><input type="text" name="indicado_por"></label>
+          <label class="f" id="indicadoWrap" style="display:none;margin-top:14px"><span>Quem indicou você? Queremos agradecer.</span><input type="text" name="indicado_por"></label>
         </div>
       </div>
 
       <div class="card">
         <h3>Trilha sonora</h3>
         <label class="f"><span>Que tipo de música você gosta de ouvir?</span></label>
-        <div class="pills" id="musica">
+        <div class="pills">
           <label class="pill"><input type="checkbox" name="musica" value="MPB"><b>MPB</b></label>
           <label class="pill"><input type="checkbox" name="musica" value="Pop"><b>Pop</b></label>
           <label class="pill"><input type="checkbox" name="musica" value="Sertanejo"><b>Sertanejo</b></label>
@@ -204,7 +246,7 @@ button{font:inherit;cursor:pointer;border:none}
           <label class="pill"><input type="checkbox" name="musica" value="Eletrônica"><b>Eletrônica</b></label>
           <label class="pill"><input type="checkbox" name="musica" value="Prefiro silêncio"><b>Prefiro silêncio</b></label>
         </div>
-        <label class="f" style="margin-top:14px"><span>Algum artista ou música favorita?</span><input type="text" name="artista"></label>
+        <label class="f" style="margin-top:16px"><span>Algum artista ou música favorita?</span><input type="text" name="artista"></label>
       </div>
 
       <div class="card grid">
@@ -228,12 +270,13 @@ button{font:inherit;cursor:pointer;border:none}
         <label class="f full"><span>O que você mais gostaria de realçar ou suavizar no seu rosto?</span><textarea name="objetivo" placeholder="Conte com suas palavras. Não existe resposta certa."></textarea></label>
         <label class="f"><span>Tem algum evento especial chegando?</span><input type="text" name="evento" placeholder="Casamento, viagem, aniversário…"></label>
         <label class="f"><span>Quando?</span><input type="date" name="evento_data"></label>
-        <label class="f full"><span>Algo mais que você gostaria que soubéssemos?</span><textarea name="extra" style="min-height:64px"></textarea></label>
+        <label class="f full"><span>Algo mais que você gostaria que soubéssemos?</span><textarea name="extra" style="min-height:68px"></textarea></label>
       </div>
     </section>
 
     <!-- 3 · Saúde geral -->
     <section class="step" data-name="História médica">
+      <div class="eyebrow jl">Etapa 3</div>
       <h2>Sua saúde</h2>
       <p class="lead">Essas respostas garantem que cada procedimento seja seguro para você. Tudo é sigiloso.</p>
       <div id="qMed1"></div>
@@ -241,6 +284,7 @@ button{font:inherit;cursor:pointer;border:none}
 
     <!-- 4 · Hábitos -->
     <section class="step" data-name="Hábitos e histórico">
+      <div class="eyebrow jl">Etapa 4</div>
       <h2>Hábitos e histórico</h2>
       <p class="lead">Quase lá na parte de saúde.</p>
       <div id="qMed2"></div>
@@ -248,18 +292,20 @@ button{font:inherit;cursor:pointer;border:none}
 
     <!-- 5 · Harmonização -->
     <section class="step" data-name="Harmonização facial">
+      <div class="eyebrow jl">Etapa 5</div>
       <h2>Sua pele e seu rosto</h2>
       <p class="lead">Para planejar sua harmonização com precisão.</p>
       <div id="qHof"></div>
       <div id="qChoices"></div>
       <div class="card">
         <label class="f"><span>Já fez algum tratamento estético? Qual e quando?</span><textarea name="trat_estetico"></textarea></label>
-        <label class="f" style="margin-top:14px"><span>Tem alguma rotina de skincare? Quais produtos usa?</span><textarea name="skincare"></textarea></label>
+        <label class="f" style="margin-top:16px"><span>Tem alguma rotina de skincare? Quais produtos usa?</span><textarea name="skincare"></textarea></label>
       </div>
     </section>
 
     <!-- 6 · Termo e assinatura -->
     <section class="step" data-name="Termo e assinatura">
+      <div class="eyebrow jl">Etapa 6</div>
       <h2>Revisão e assinatura</h2>
       <p class="lead">Confira o resumo e assine com o dedo (ou o mouse).</p>
       <div class="card review" id="review"></div>
@@ -271,25 +317,30 @@ button{font:inherit;cursor:pointer;border:none}
       </div>
       <div class="card">
         <h3>Assinatura do paciente ou responsável</h3>
-        <div class="sig-box" id="sigBox"><div class="line"></div><div class="ph" id="sigPh">Assine aqui</div><canvas id="sig"></canvas></div>
+        <div class="sig-box" id="sigBox"><div class="line"></div><div class="x">×</div><div class="ph jl" id="sigPh">Assine aqui</div><canvas id="sig"></canvas></div>
         <div class="sig-tools"><span id="sigDate"></span><button type="button" class="linkbtn" id="sigClear">Limpar assinatura</button></div>
       </div>
     </section>
 
     <!-- 7 · Concluído -->
-    <section class="step" data-name="Concluído">
-      <div class="done">
-        <div class="ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5d6b4c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <h2 class="serif" id="doneTitle">Tudo pronto</h2>
-        <p class="lead" style="max-width:440px;margin:8px auto 0">Sua ficha foi assinada. Agora é só enviar para a Dra. Helena. Mal podemos esperar para receber você.</p>
+    <section class="step done" data-name="Concluído">
+      <div class="hero">
+        <div class="pattern"></div>
+        <div class="ok"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E3D3BC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div class="eyebrow jl">Ficha assinada</div>
+        <h2 id="doneTitle">Obrigada</h2>
+        <p id="doneText">Mal podemos esperar para receber você.</p>
+        <div class="status wait" id="sendStatus"><i></i><span>Enviando sua ficha à clínica…</span></div>
         <div class="actions">
-          <button type="button" class="btn primary" id="btnShare">Enviar ficha para a Dra. Helena</button>
-          <button type="button" class="btn ghost" id="btnDownload" style="flex:none">Baixar PDF assinado</button>
+          <button type="button" class="btn light" id="btnShare">Enviar pelo WhatsApp</button>
+          <button type="button" class="btn outline-light" id="btnDownload">Baixar minha cópia</button>
         </div>
-        <p class="small" style="margin-top:18px" id="hashInfo"></p>
+        <p class="small" style="margin-top:20px" id="hashInfo"></p>
       </div>
     </section>
   </form>
+
+  <footer class="brand"><i class="mark m-simbolo" aria-hidden="true"></i><span class="jl">HG Clinical Hub</span></footer>
 </div>
 
 <nav class="nav" id="nav">
@@ -302,15 +353,17 @@ button{font:inherit;cursor:pointer;border:none}
 
 <script>
 /* ============ CONFIGURAÇÃO ============
-   WHATSAPP: número da Dra. Helena (só dígitos, com 55 + DDD). Usado no botão de envio.
-   WEBHOOK:  opcional. Se preenchido (ex.: webhook do n8n), a ficha completa + PDF são
-             enviados automaticamente para lá ao assinar. Deixe vazio para não usar. */
+   WHATSAPP: número da clínica (só dígitos, com 55 + DDD).
+   WEBHOOK:  ponto de integração (n8n). Recebe a ficha em JSON estruturado + PDF e distribui
+             para Drive, CRM e sistema. Se falhar, a paciente envia pelo WhatsApp. */
 const CONFIG = {
   WHATSAPP: "5585991763085",
-  WEBHOOK: "https://n8n.vps1044.panel.speedfy.host/webhook/ficha-clinica-helena"
+  WEBHOOK: "https://n8n.vps1044.panel.speedfy.host/webhook/ficha-clinica-helena",
+  SCHEMA: "hg.anamnese_facial.v1",
 };
 
-/* ============ PERGUNTAS (fiéis à ficha em papel) ============ */
+/* ============ PERGUNTAS (fiéis à ficha em papel) ============
+   [id, pergunta, rótulo do detalhe, opções] — os ids são estáveis: o sistema/CRM usa estes nomes. */
 const MED1 = [
   ["tratamento","Está sob tratamento médico?","Qual?"],
   ["medicacao","Está tomando alguma medicação?","Qual?"],
@@ -359,6 +412,8 @@ const CHOICES = [
   ["olheiras","Se incomoda com olheiras?",["Não","Profunda","Escura"]],
 ];
 const ALL_YN = [...MED1, ...MED2, ...HOF];
+// "Sim" nestas perguntas não é um alerta clínico (é hábito positivo)
+const NAO_ALERTA = new Set(["filtro"]);
 
 /* ============ RENDERIZAÇÃO ============ */
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -398,12 +453,11 @@ function saveDraft() { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(coll
 function loadDraft() {
   let d; try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (e) {}
   hasDraft = !!(d && Object.keys(d).length > 2);
-  // Permite pré-preencher pelo link: ...ficha.html?nome=Maria%20Silva
+  // Pré-preenchimento pelo link: ...?nome=Maria%20Silva
   const p = new URLSearchParams(location.search);
   d = d || {}; if (p.get("nome") && !d.nome) d.nome = p.get("nome");
   for (const [k, v] of Object.entries(d)) {
-    const els = form.querySelectorAll(`[name="${k}"]`);
-    els.forEach(el => {
+    form.querySelectorAll(`[name="${k}"]`).forEach(el => {
       if (el.type === "radio") el.checked = el.value === v;
       else if (el.type === "checkbox") el.checked = Array.isArray(v) ? v.includes(el.value) : !!v;
       else el.value = v;
@@ -460,7 +514,7 @@ function show(i) {
   $("#progress").hidden = cur === 0 || cur === steps.length - 1;
   $("#stepName").textContent = steps[cur].dataset.name;
   $("#stepCount").textContent = `${cur} de ${total}`;
-  $("#bar").style.width = `${(cur / total) * 100}%`;
+  $$("#bar i").forEach((b, k) => { b.classList.toggle("on", k < cur - 1); b.classList.toggle("cur", k === cur - 1); });
   $("#btnBack").hidden = cur === 0;
   $("#nav").hidden = cur === steps.length - 1;
   $("#btnNext").textContent = cur === 0 ? (hasDraft ? "Continuar de onde parei" : "Começar")
@@ -468,7 +522,7 @@ function show(i) {
   if (cur === steps.length - 2) { buildReview(); setTimeout(sizeCanvas, 30); }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2600); }
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2800); }
 
 function validate(i) {
   const s = steps[i]; let bad = [];
@@ -504,20 +558,23 @@ $("#btnNext").onclick = async () => {
 $("#btnBack").onclick = () => show(cur - 1);
 
 /* ============ REVISÃO ============ */
+const fmtDate = s => s ? s.split("-").reverse().join("/") : "";
+function alertas(d) {
+  return ALL_YN.filter(([id, , , opt = {}]) => d[id] === "Sim" && !NAO_ALERTA.has(id) && !(opt.fem && d.sexo === "Masculino"))
+    .map(([id, t]) => ({ id, pergunta: t, detalhe: d[id + "_obs"] || "" }));
+}
 function buildReview() {
-  const d = collect();
-  const sims = ALL_YN.filter(([id]) => d[id] === "Sim").map(([id, t]) => `${t.replace("?", "")}${d[id + "_obs"] ? ": " + d[id + "_obs"] : ""}`);
+  const d = collect(), al = alertas(d);
   $("#review").innerHTML = `<h3>Resumo</h3><dl>
     <dt>Nome</dt><dd>${esc(d.nome || "")}</dd>
     <dt>CPF</dt><dd>${esc(d.cpf || "")}</dd>
     <dt>Nascimento</dt><dd>${fmtDate(d.nascimento)}</dd>
     <dt>Telefone</dt><dd>${esc(d.telefone || "")}</dd>
-    <dt>Respostas “Sim” na saúde</dt><dd>${sims.length}</dd></dl>
-    ${sims.length ? `<ul style="margin:12px 0 0 18px;font-size:14px" class="alert">${sims.map(s => `<li>${esc(s)}</li>`).join("")}</ul>` : ""}
-    <p class="small" style="margin-top:12px">Precisa corrigir algo? Use o botão Voltar.</p>`;
+    <dt>Pontos de atenção na saúde</dt><dd>${al.length}</dd></dl>
+    ${al.length ? `<ul style="margin:12px 0 0 18px;font-size:14px" class="alert">${al.map(a => `<li>${esc(a.pergunta.replace("?", ""))}${a.detalhe ? ": " + esc(a.detalhe) : ""}</li>`).join("")}</ul>` : ""}
+    <p class="small" style="margin-top:14px">Precisa corrigir algo? Use o botão Voltar.</p>`;
   $("#sigDate").textContent = "Fortaleza, " + new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 }
-const fmtDate = s => s ? s.split("-").reverse().join("/") : "";
 
 /* ============ ASSINATURA ============ */
 const cv = $("#sig"), ctx = cv.getContext("2d");
@@ -527,7 +584,7 @@ function sizeCanvas() {
   if (!r.width) return;
   cv.width = r.width * dpr; cv.height = r.height * dpr;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.lineCap = ctx.lineJoin = "round"; ctx.strokeStyle = "#1f2a44";
+  ctx.lineCap = ctx.lineJoin = "round"; ctx.strokeStyle = "#2B3124";
   redraw();
 }
 function redraw() {
@@ -548,40 +605,100 @@ cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end)
 $("#sigClear").onclick = () => { strokes = []; sigHas = false; redraw(); $("#sigPh").style.display = ""; };
 window.addEventListener("resize", () => { if (cur === steps.length - 2) sizeCanvas(); });
 
-/* ============ PDF ASSINADO ============ */
-let pdfBlob = null, pdfName = "";
+/* ============ DADOS ESTRUTURADOS (contrato com Drive / CRM / sistema) ============ */
 async function sha256(txt) {
   try { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); }
   catch (e) { return ""; }
 }
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
 function sigPNG() {
-  // recorta em fundo branco para o PDF
   const c = document.createElement("canvas"); c.width = cv.width; c.height = cv.height;
   const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.drawImage(cv, 0, 0);
   return c.toDataURL("image/png");
 }
+const sn = v => v === "Sim" ? true : v === "Não" ? false : null;
+function buildPayload(d, meta) {
+  const bloco = list => list.filter(([, , , opt = {}]) => !(opt.fem && d.sexo === "Masculino"))
+    .map(([id, pergunta]) => ({ id, pergunta, resposta: sn(d[id]), detalhe: d[id + "_obs"] || null }));
+  const tel = (d.telefone || "").replace(/\D/g, "");
+  return {
+    schema: CONFIG.SCHEMA,
+    submission_id: meta.id,
+    enviado_em: meta.iso,
+    origem: { canal: "formulario_online", url: location.href.split("?")[0], dispositivo: meta.ua, fuso: meta.tz },
+    paciente: {
+      nome: d.nome || null, apelido: d.apelido || null, sexo: d.sexo || null, nascimento: d.nascimento || null,
+      cpf: (d.cpf || "").replace(/\D/g, "") || null, rg: d.rg || null,
+      telefone: tel ? "55" + tel : null, email: d.email || null,
+      endereco: { cep: (d.cep || "").replace(/\D/g, "") || null, logradouro: d.endereco || null, bairro: d.bairro || null, cidade: d.cidade || null },
+      estado_civil: d.estado_civil || null, profissao: d.profissao || null,
+    },
+    perfil: {
+      instagram: (d.instagram || "").replace(/^@?/, "@").replace(/^@$/, "") || null,
+      como_conheceu: d.origem || null, indicado_por: d.indicado_por || null,
+      musica: { estilos: d.musica || [], favorito: d.artista || null },
+      bebida: d.bebida || null, sensibilidade: d.sensibilidade || null,
+      objetivo: d.objetivo || null, evento: d.evento ? { descricao: d.evento, data: d.evento_data || null } : null,
+      observacoes: d.extra || null,
+    },
+    saude: { historia_medica: bloco(MED1), habitos_historico: bloco(MED2) },
+    harmonizacao: {
+      perguntas: bloco(HOF),
+      ingestao_agua: d.agua || null, tipo_pele: d.tipo_pele || null, acne: d.acne || null, olheiras: d.olheiras || null,
+      tratamentos_esteticos: d.trat_estetico || null, skincare: d.skincare || null,
+    },
+    alertas: alertas(d),
+    consentimentos: {
+      termo_responsabilidade: true, lgpd: true,
+      assinatura: { tipo: "eletronica_simples", assinado_em: meta.iso, hash_sha256: meta.hash, imagem_png_base64: meta.sig.split(",")[1] },
+    },
+    pdf: null, // preenchido depois de gerado
+  };
+}
 
+/* ============ PDF ASSINADO ============ */
+let pdfBlob = null, pdfName = "", logoCache = null;
+async function tintedLogo(hex) {
+  // Recolore o logo (PNG com transparência) para usar no PDF
+  if (logoCache) return logoCache;
+  try {
+    const img = new Image(); img.src = "assets/logo.png"; await img.decode();
+    const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
+    const x = c.getContext("2d"); x.drawImage(img, 0, 0); x.globalCompositeOperation = "source-in"; x.fillStyle = hex; x.fillRect(0, 0, c.width, c.height);
+    logoCache = { data: c.toDataURL("image/png"), ratio: c.height / c.width };
+  } catch (e) { logoCache = null; }
+  return logoCache;
+}
 async function buildPDF(d, meta) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "mm", format: "a4" });
-  const W = 210, M = 18, SAGE = [93, 107, 76], MUTED = [125, 128, 118], INK = [43, 46, 39];
+  const W = 210, M = 18, OLIVE = [65, 75, 57], SAGE = [132, 149, 115], BROWN = [112, 93, 63], MUTED = [133, 124, 110], INK = [47, 53, 42], LINE = [228, 217, 199];
+  const logo = await tintedLogo("#414B39");
   let y = 0, page = 1;
   const header = () => {
-    doc.setFillColor(...SAGE); doc.rect(0, 0, W, 2.5, "F");
-    doc.setFont("times", "normal"); doc.setFontSize(20); doc.setTextColor(...INK); doc.text("Helena Gomes", M, 17);
-    doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.setTextColor(...MUTED);
-    doc.text("C I R U R G I Ã   D E N T I S T A", M, 22); doc.text("CRO-CE 13680", W - M, 17, { align: "right" });
-    doc.setDrawColor(228, 225, 216); doc.line(M, 26, W - M, 26);
-    y = 34;
+    doc.setFillColor(...OLIVE); doc.rect(0, 0, W, 3, "F");
+    if (logo) doc.addImage(logo.data, "PNG", M, 9, 34, 34 * logo.ratio, "logo", "FAST");
+    else { doc.setFont("helvetica", "normal"); doc.setFontSize(14); doc.setTextColor(...OLIVE); doc.text("HG CLINICAL HUB", M, 17); }
+    doc.setFont("helvetica", "normal"); doc.setFontSize(8.5); doc.setTextColor(...OLIVE);
+    doc.text("DRA. HELENA GOMES", W - M, 14, { align: "right", charSpace: 0.6 });
+    doc.setFontSize(7); doc.setTextColor(...MUTED);
+    doc.text("CIRURGIÃ-DENTISTA  ·  CRO-CE 13680", W - M, 19, { align: "right", charSpace: 0.3 });
+    doc.setDrawColor(...LINE); doc.line(M, 26, W - M, 26);
+    y = 35;
   };
   const footer = () => {
     doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.setTextColor(...MUTED);
-    doc.text("FICHA CLÍNICA FACIAL  •  HELENA GOMES", M, 289);
+    doc.text("FICHA CLÍNICA FACIAL  ·  HG CLINICAL HUB", M, 289);
     doc.text(`Cód. verificação: ${meta.hash.slice(0, 16)}…`, W / 2, 289, { align: "center" });
     doc.text(String(page).padStart(2, "0"), W - M, 289, { align: "right" });
   };
   const need = h => { if (y + h > 280) { footer(); doc.addPage(); page++; header(); } };
-  const section = t => { need(14); y += 3; doc.setFont("times", "normal"); doc.setFontSize(14); doc.setTextColor(...SAGE); doc.text(t, M, y); y += 2; doc.setDrawColor(228, 225, 216); doc.line(M, y, W - M, y); y += 6; };
+  const section = t => {
+    need(14); y += 3;
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(...BROWN);
+    doc.text(t.toUpperCase(), M, y, { charSpace: 0.9 }); y += 2.5;
+    doc.setDrawColor(...LINE); doc.line(M, y, W - M, y); y += 6;
+  };
   const row = (label, value, warn) => {
     doc.setFont("helvetica", "normal"); doc.setFontSize(9);
     const lw = 92, vw = W - 2 * M - lw - 4;
@@ -590,19 +707,29 @@ async function buildPDF(d, meta) {
     need(h);
     doc.setFont("helvetica", "normal"); doc.setFontSize(9);
     doc.setTextColor(...MUTED); doc.text(L, M, y);
-    doc.setTextColor(...(warn ? [165, 72, 60] : INK)); if (warn) doc.setFont("helvetica", "bold");
+    doc.setTextColor(...(warn ? [156, 74, 58] : INK)); if (warn) doc.setFont("helvetica", "bold");
     doc.text(V, M + lw + 4, y);
-    y += h; doc.setDrawColor(240, 238, 232); doc.line(M, y - 2.6, W - M, y - 2.6);
+    y += h; doc.setDrawColor(241, 235, 225); doc.line(M, y - 2.6, W - M, y - 2.6);
   };
   const yn = list => list.forEach(([id, t, det, opt = {}]) => {
     if (opt.fem && d.sexo === "Masculino") return;
     const v = d[id] || "—", o = d[id + "_obs"];
-    row(t, v === "Sim" && o ? `Sim — ${o}` : v, v === "Sim");
+    row(t, v === "Sim" && o ? `Sim — ${o}` : v, v === "Sim" && !NAO_ALERTA.has(id));
   });
 
   header();
-  doc.setFont("times", "normal"); doc.setFontSize(17); doc.setTextColor(...INK);
-  doc.text("Ficha Clínica Facial", M, y); y += 9;
+  doc.setFont("helvetica", "normal"); doc.setFontSize(15); doc.setTextColor(...OLIVE);
+  doc.text("FICHA CLÍNICA FACIAL", M, y, { charSpace: 1.2 }); y += 10;
+
+  const al = alertas(d);
+  if (al.length) {
+    const txt = doc.splitTextToSize(al.map(a => a.pergunta.replace("?", "") + (a.detalhe ? `: ${a.detalhe}` : "")).join("  ·  "), W - 2 * M - 8);
+    const h = txt.length * 4 + 10; need(h);
+    doc.setFillColor(248, 238, 232); doc.roundedRect(M, y - 4, W - 2 * M, h, 2, 2, "F");
+    doc.setFontSize(7.5); doc.setTextColor(156, 74, 58); doc.text("PONTOS DE ATENÇÃO", M + 4, y + 1, { charSpace: 0.6 });
+    doc.setFontSize(9); doc.setFont("helvetica", "bold"); doc.text(txt, M + 4, y + 6);
+    y += h + 3;
+  }
 
   section("Dados pessoais do paciente");
   [["Nome", d.nome], ["Como prefere ser chamada(o)", d.apelido], ["Sexo", d.sexo], ["Data de nascimento", fmtDate(d.nascimento)],
@@ -611,7 +738,7 @@ async function buildPDF(d, meta) {
    ["Indicado por", d.indicado_por]].forEach(([l, v]) => row(l, v));
 
   section("Perfil e experiência");
-  [["Instagram", d.instagram], ["Como conheceu a Dra. Helena", d.origem], ["Estilos musicais", (d.musica || []).join(", ")],
+  [["Instagram", d.instagram ? "@" + d.instagram.replace(/^@/, "") : ""],["Como conheceu a Dra. Helena", d.origem], ["Estilos musicais", (d.musica || []).join(", ")],
    ["Artista / música favorita", d.artista], ["Bebida preferida", d.bebida], ["Relação com agulhas/desconforto", d.sensibilidade],
    ["O que deseja realçar ou suavizar", d.objetivo], ["Evento especial", [d.evento, fmtDate(d.evento_data)].filter(Boolean).join(" — ")],
    ["Observações da paciente", d.extra]].forEach(([l, v]) => row(l, v));
@@ -622,26 +749,26 @@ async function buildPDF(d, meta) {
   row("Já fez algum tratamento estético?", d.trat_estetico);
   row("Tem alguma rotina de skincare?", d.skincare);
 
-  need(85);
+  need(88);
   section("Termo de responsabilidade");
-  doc.setFont("times", "normal"); doc.setFontSize(11.5); doc.setTextColor(...INK);
-  doc.text(doc.splitTextToSize("Declaro que todas as informações aqui prestadas são verdadeiras e que nenhum fato foi omitido.", W - 2 * M), M, y); y += 11;
-  doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(...MUTED);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(10.5); doc.setTextColor(...OLIVE);
+  doc.text(doc.splitTextToSize("Declaro que todas as informações aqui prestadas são verdadeiras e que nenhum fato foi omitido.", W - 2 * M), M, y); y += 10;
+  doc.setFontSize(8); doc.setTextColor(...MUTED);
   const lg = doc.splitTextToSize("Autorizo a Dra. Helena Gomes a tratar meus dados pessoais e de saúde exclusivamente para fins de atendimento, prontuário e comunicação comigo, nos termos da Lei 13.709/2018 (LGPD).", W - 2 * M);
   doc.text(lg, M, y); y += lg.length * 3.6 + 4;
   doc.text(`Data: ${meta.dataBR}`, M, y); y += 4;
-  const img = sigPNG(), ratio = cv.height / cv.width, sw = 80;
-  doc.addImage(img, "PNG", M, y, sw, sw * ratio, undefined, "FAST"); y += sw * ratio + 1;
-  doc.setDrawColor(...INK); doc.line(M, y, M + sw, y); y += 4;
+  const ratio = cv.height / cv.width, sw = 80;
+  doc.addImage(meta.sig, "PNG", M, y, sw, sw * ratio, "sig", "FAST"); y += sw * ratio + 1;
+  doc.setDrawColor(...OLIVE); doc.line(M, y, M + sw, y); y += 4;
   doc.setFontSize(8.5); doc.setTextColor(...INK); doc.text(`${d.nome} — CPF ${d.cpf}`, M, y); y += 3.8;
   doc.setTextColor(...MUTED); doc.text("Assinatura do paciente ou responsável", M, y); y += 8;
 
-  need(26);
-  doc.setFillColor(247, 245, 240); doc.roundedRect(M, y, W - 2 * M, 22, 2, 2, "F");
+  need(28);
+  doc.setFillColor(246, 241, 233); doc.roundedRect(M, y, W - 2 * M, 24, 2, 2, "F");
   doc.setFontSize(7); doc.setTextColor(...MUTED);
   doc.text([
     "REGISTRO DE ASSINATURA ELETRÔNICA (MP 2.200-2/2001, art. 10, §2º; Lei 14.063/2020)",
-    `Assinado em: ${meta.dataHora}  •  Fuso: ${meta.tz}`,
+    `Assinado em: ${meta.dataHora}  •  Fuso: ${meta.tz}  •  Protocolo: ${meta.id}`,
     `Dispositivo: ${meta.ua.slice(0, 120)}`,
     `Código de verificação (SHA-256 das respostas + assinatura): ${meta.hash}`,
   ], M + 4, y + 5, { lineHeightFactor: 1.5 });
@@ -649,31 +776,53 @@ async function buildPDF(d, meta) {
   return doc.output("blob");
 }
 
+/* ============ ENVIO ============ */
+const toB64 = blob => new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result.split(",")[1]); f.readAsDataURL(blob); });
+async function sendToClinic(payload) {
+  if (!CONFIG.WEBHOOK) return false;
+  for (let tentativa = 0; tentativa < 2; tentativa++) {
+    try {
+      const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 15000);
+      const r = await fetch(CONFIG.WEBHOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: ctl.signal });
+      clearTimeout(t);
+      if (r.ok) return true;
+    } catch (e) {}
+  }
+  return false;
+}
+function setStatus(ok) {
+  const s = $("#sendStatus"); s.classList.remove("wait");
+  if (ok) {
+    s.querySelector("span").textContent = "Ficha recebida pela clínica";
+    $("#btnShare").textContent = "Avisar pelo WhatsApp";
+    $("#btnShare").className = "btn outline-light"; $("#btnDownload").className = "btn light";
+  } else {
+    s.querySelector("i").style.background = "#E0A48F";
+    s.querySelector("span").textContent = "Envie sua ficha pelo WhatsApp";
+  }
+}
+
 async function finish() {
   const btn = $("#btnNext"); btn.disabled = true; btn.textContent = "Gerando sua ficha…";
   try {
     const d = collect(), now = new Date();
-    const sig = sigPNG();
     const meta = {
-      dataBR: now.toLocaleDateString("pt-BR"),
-      dataHora: now.toLocaleString("pt-BR"),
-      iso: now.toISOString(),
-      tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
-      ua: navigator.userAgent,
+      id: uuid(), sig: sigPNG(),
+      dataBR: now.toLocaleDateString("pt-BR"), dataHora: now.toLocaleString("pt-BR"), iso: now.toISOString(),
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "", ua: navigator.userAgent,
     };
-    meta.hash = await sha256(JSON.stringify(d) + meta.iso + sig) || "indisponível";
+    meta.hash = await sha256(JSON.stringify(d) + meta.iso + meta.sig) || "indisponível";
     pdfBlob = await buildPDF(d, meta);
     pdfName = `Ficha Clinica - ${(d.nome || "paciente").replace(/[^\p{L}\p{N} ]/gu, "")} - ${meta.dataBR.replace(/\//g, "-")}.pdf`;
-    if (CONFIG.WEBHOOK) {
-      const b64 = await new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result.split(",")[1]); f.readAsDataURL(pdfBlob); });
-      fetch(CONFIG.WEBHOOK, { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ respostas: d, meta, assinatura_png: sig, pdf_nome: pdfName, pdf_base64: b64 }) }).catch(() => {});
-    }
+    const payload = buildPayload(d, meta);
+    payload.pdf = { nome: pdfName, base64: await toB64(pdfBlob) };
+
     try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
     const n = firstName();
-    $("#doneTitle").textContent = n ? `Obrigada, ${n}!` : "Obrigada!";
-    $("#hashInfo").textContent = `Assinado em ${meta.dataHora} · código ${meta.hash.slice(0, 16)}`;
+    $("#doneTitle").textContent = n ? `Obrigada, ${n}` : "Obrigada";
+    $("#hashInfo").textContent = `Protocolo ${meta.id.slice(0, 8).toUpperCase()} · assinado em ${meta.dataHora}`;
     show(steps.length - 1);
+    setStatus(await sendToClinic(payload));
   } catch (e) {
     console.error(e); toast("Não foi possível gerar o PDF. Tente novamente.");
   } finally { btn.disabled = false; }
@@ -690,7 +839,6 @@ $("#btnShare").onclick = async () => {
     try { await navigator.share({ files: [file], title: "Ficha clínica assinada", text: "Olá, Dra. Helena! Segue minha ficha clínica preenchida e assinada." }); return; }
     catch (e) { if (e.name === "AbortError") return; }
   }
-  // Computador / navegador sem compartilhamento: baixa o PDF e abre o WhatsApp
   download();
   toast("PDF baixado. Anexe-o na conversa do WhatsApp.");
   setTimeout(() => window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent("Olá, Dra. Helena! Acabei de preencher e assinar minha ficha clínica. Segue o PDF em anexo.")}`, "_blank"), 900);
