@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ficha Clínica Facial — HG Clinical Hub</title>
+<title>Ficha Clínica Facial — Dra. Helena Gomes</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#414B39">
 <link rel="icon" href="assets/simbolo.png">
@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* ============ IDENTIDADE HG CLINICAL HUB ============ */
+/* ============ IDENTIDADE HG ============ */
 :root{
   --cream:#E3D3BC; --sage-l:#B4B897; --sage:#849573; --olive:#414B39; --brown:#705D3F;
   --bg:#F4EEE4; --paper:#FBF8F3; --ink:#2F352A; --muted:#857C6E; --line:#E4D9C7;
@@ -25,14 +25,12 @@ body{font-family:Jost,system-ui,sans-serif;font-weight:400;color:var(--ink);font
 
 /* Marca como máscara: recolore o PNG com qualquer cor da paleta */
 .mark{display:block;background:currentColor;-webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat}
-.m-logo{--src:url(assets/logo.png);aspect-ratio:651/260}
 .m-simbolo{--src:url(assets/simbolo.png);aspect-ratio:249/240}
-.m-sublogo{--src:url(assets/sublogo.png);aspect-ratio:310/320}
 
 /* Topo */
 .topbar{background:var(--olive);color:var(--cream)}
 .topbar .in{max-width:720px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.topbar .m-logo{height:38px;flex-shrink:0}
+.topbar .m-simbolo{height:36px;flex-shrink:0}
 @media (max-width:420px){.topbar .who{font-size:9.5px}.topbar .who b{font-size:10.5px}}
 .topbar .who{font-size:10.5px;text-align:right;line-height:1.5;color:var(--sage-l)}
 .topbar .who b{display:block;color:var(--cream);font-weight:400;font-size:11.5px}
@@ -111,7 +109,7 @@ button{font:inherit;cursor:pointer;border:none}
 .hero .pattern{position:absolute;inset:-20px;opacity:.07;color:var(--cream);
   background:currentColor;-webkit-mask:url(assets/simbolo.png) 0 0/64px auto repeat;mask:url(assets/simbolo.png) 0 0/64px auto repeat;pointer-events:none}
 .hero>*{position:relative}
-.hero .m-sublogo{width:118px;margin:0 auto 26px;color:var(--cream)}
+.hero .m-simbolo{width:84px;margin:0 auto 28px;color:var(--cream)}
 .hero .eyebrow{color:var(--sage-l)}
 .hero h2{color:var(--cream);font-size:24px;margin:6px 0 14px}
 .hero p{color:#D9CDB9;max-width:470px;margin:0 auto 10px;font-weight:300}
@@ -158,7 +156,7 @@ footer.brand span{font-size:10px;color:var(--muted)}
 <body>
 <header class="topbar">
   <div class="in">
-    <i class="mark m-logo" role="img" aria-label="HG Clinical Hub"></i>
+    <i class="mark m-simbolo" role="img" aria-label="HG"></i>
     <div class="who jl"><b>Dra. Helena Gomes</b>Cirurgiã-Dentista · CRO-CE 13680</div>
   </div>
 </header>
@@ -174,7 +172,7 @@ footer.brand span{font-size:10px;color:var(--muted)}
     <section class="step active" data-name="Boas-vindas">
       <div class="hero">
         <div class="pattern"></div>
-        <i class="mark m-sublogo" aria-hidden="true"></i>
+        <i class="mark m-simbolo" aria-hidden="true"></i>
         <div class="eyebrow jl">Ficha clínica facial</div>
         <h2 id="welcomeTitle">Seja muito bem-vinda</h2>
         <p>Preparamos esta ficha para que o seu atendimento seja pensado, desde o primeiro minuto, exclusivamente para você.</p>
@@ -340,7 +338,7 @@ footer.brand span{font-size:10px;color:var(--muted)}
     </section>
   </form>
 
-  <footer class="brand"><i class="mark m-simbolo" aria-hidden="true"></i><span class="jl">HG Clinical Hub</span></footer>
+  <footer class="brand"><i class="mark m-simbolo" aria-hidden="true"></i><span class="jl">Dra. Helena Gomes</span></footer>
 </div>
 
 <nav class="nav" id="nav">
@@ -662,7 +660,7 @@ async function tintedLogo(hex) {
   // Recolore o logo (PNG com transparência) para usar no PDF
   if (logoCache) return logoCache;
   try {
-    const img = new Image(); img.src = "assets/logo.png"; await img.decode();
+    const img = new Image(); img.src = "assets/simbolo.png"; await img.decode();
     const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
     const x = c.getContext("2d"); x.drawImage(img, 0, 0); x.globalCompositeOperation = "source-in"; x.fillStyle = hex; x.fillRect(0, 0, c.width, c.height);
     logoCache = { data: c.toDataURL("image/png"), ratio: c.height / c.width };
@@ -677,8 +675,8 @@ async function buildPDF(d, meta) {
   let y = 0, page = 1;
   const header = () => {
     doc.setFillColor(...OLIVE); doc.rect(0, 0, W, 3, "F");
-    if (logo) doc.addImage(logo.data, "PNG", M, 9, 34, 34 * logo.ratio, "logo", "FAST");
-    else { doc.setFont("helvetica", "normal"); doc.setFontSize(14); doc.setTextColor(...OLIVE); doc.text("HG CLINICAL HUB", M, 17); }
+    if (logo) doc.addImage(logo.data, "PNG", M, 7.5, 15 / logo.ratio, 15, "logo", "FAST");
+    else { doc.setFont("helvetica", "normal"); doc.setFontSize(14); doc.setTextColor(...OLIVE); doc.text("HG", M, 17); }
     doc.setFont("helvetica", "normal"); doc.setFontSize(8.5); doc.setTextColor(...OLIVE);
     doc.text("DRA. HELENA GOMES", W - M, 14, { align: "right", charSpace: 0.6 });
     doc.setFontSize(7); doc.setTextColor(...MUTED);
@@ -688,7 +686,7 @@ async function buildPDF(d, meta) {
   };
   const footer = () => {
     doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.setTextColor(...MUTED);
-    doc.text("FICHA CLÍNICA FACIAL  ·  HG CLINICAL HUB", M, 289);
+    doc.text("FICHA CLÍNICA FACIAL  ·  DRA. HELENA GOMES", M, 289);
     doc.text(`Cód. verificação: ${meta.hash.slice(0, 16)}…`, W / 2, 289, { align: "center" });
     doc.text(String(page).padStart(2, "0"), W - M, 289, { align: "right" });
   };
